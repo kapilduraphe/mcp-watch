@@ -177,6 +177,41 @@ This tool is based on security research from leading organizations in AI and cyb
 - **Steganographic attacks** via ANSI escape sequences
 - **Toxic agent flows** across repository boundaries
 
+### Research Sources
+
+- **VulnerableMCP Database** ([vulnerablemcp.info](https://vulnerablemcp.info))
+  - Comprehensive database of MCP vulnerabilities
+  - Real-world attack patterns and examples
+  - Regular updates on new attack vectors
+
+- **HiddenLayer Research** ([Exploiting MCP Tool Parameters](https://hiddenlayer.com/innovation-hub/exploiting-mcp-tool-parameters))
+  - Parameter injection attacks that extract sensitive data
+  - Tool call history and conversation exfiltration
+  - System prompt extraction vulnerabilities
+  - Chain of thought manipulation
+  - Model name disclosure risks
+
+- **Invariant Labs Research** ([GitHub MCP Vulnerability](https://invariantlabs.ai/blog/mcp-github-vulnerability))
+  - Tool poisoning detection
+  - Toxic agent flows
+  - Cross-repository security issues
+  - Rug-pull updates in tool functionality
+  - Server spoofing prevention
+
+- **Trail of Bits Research** ([MCP Security Research](https://blog.trailofbits.com/categories/mcp))
+  - Conversation exfiltration methods
+  - ANSI injection attacks
+  - Protocol-level vulnerabilities
+  - Insecure credential storage patterns
+  - Cross-server shadowing attacks
+
+- **PromptHub Analysis** ([5 MCP Security Vulnerabilities](https://prompthub.substack.com/p/5-mcp-security-vulnerabilities-you))
+  - Command injection patterns (43% of public MCP servers affected)
+  - SSRF vulnerability statistics (30% allow arbitrary URL fetching)
+  - Path traversal attack vectors (22% leak files outside intended directories)
+  - Retrieval-Agent Deception (RADE) attacks
+  - Tool poisoning prevention strategies
+
 ## Exit Codes
 
 - `0` - No critical or high severity vulnerabilities found
