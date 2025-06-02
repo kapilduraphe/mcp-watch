@@ -1,0 +1,42 @@
+{
+  "name": "mcp-watch",
+  "version": "2.0.0",
+  "description": "Security scanner for Model Context Protocol (MCP) servers - detect vulnerabilities and security issues",
+  "main": "dist/main.js",
+  "bin": {
+    "mcp-watch": "./dist/main.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "ts-node main.ts",
+    "start": "node dist/main.js",
+    "scan": "ts-node main.ts scan",
+    "clean": "rm -rf dist",
+    "prepublishOnly": "npm run clean && npm run build",
+    "prepare": "npm run build",
+    "type-check": "tsc --noEmit"
+  },
+  "author": "Your Name <your.email@example.com>",
+  "license": "MIT",
+  "dependencies": {
+    "commander": "^11.1.0",
+    "tmp": "^0.2.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/tmp": "^0.2.4",
+    "@types/jest": "^29.5.0",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "ts-node": "^10.9.0",
+    "typescript": "^5.0.0"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ]
+}
