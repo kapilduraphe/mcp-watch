@@ -32,33 +32,26 @@ Thank you for your interest in contributing to MCP Watch! This document provides
 ### Running the Project
 
 ```bash
-# Development mode with hot reload
-npm run dev
-
 # Build the project
 npm run build
 
-# Run tests
-npm run test
+# Run in development mode
+npm run dev scan https://github.com/user/repo
 
-# Run tests in watch mode
-npm test:watch
+# Quick scan during development
+npm run scan https://github.com/user/repo
 
-# Lint code
-npm run lint
-
-# Fix linting issues
-npm run lint:fix
+# Clean build artifacts
+npm run clean
 ```
 
 ### Testing Your Changes
 
 Before submitting a PR, make sure to:
 
-1. **Test the CLI** with various MCP repositories
-2. **Run the test suite**: `npm test`
-3. **Check code style**: `npm run lint`
-4. **Build successfully**: `npm run build`
+1. **Run type checking**: `npm run type-check`
+2. **Test your changes manually** with real repositories
+3. **Build successfully**: `npm run build`
 
 ## 🐛 Reporting Issues
 
@@ -100,44 +93,14 @@ Create a new scanner in the `scanner/scanners/` directory:
 import { AbstractScanner } from "../BaseScanner";
 import { Vulnerability } from "../../types/Vulnerability";
 
-export class NewVulnerabilityScanner extends AbstractScanner {
+export class MyScanner extends AbstractScanner {
   async scan(projectPath: string): Promise<Vulnerability[]> {
-    console.log("🔍 Scanning for new vulnerability...");
+    console.log("🔍 Scanning for my vulnerability type...");
     
     const vulnerabilities: Vulnerability[] = [];
-    const files = MCPScanner.getAllFiles(projectPath, [".ts", ".js"]);
-    
-    for (const file of files) {
-      const content = fs.readFileSync(file, "utf8");
-      const lines = content.split("\n");
-      
-      lines.forEach((line, index) => {
-        if (this.containsNewVulnerability(line)) {
-          vulnerabilities.push({
-            id: "NEW_VULNERABILITY_ID",
-            severity: "high", // critical|high|medium|low
-            category: "vulnerability-category",
-            message: "Clear description of the issue",
-            file: path.relative(projectPath, file),
-            line: index + 1,
-            evidence: line.trim(),
-            source: "Research source"
-          });
-        }
-      });
-    }
+    // Your scanning logic here
     
     return vulnerabilities;
-  }
-
-  private containsNewVulnerability(line: string): boolean {
-    // Your detection logic here
-    const patterns = [
-      /pattern1/i,
-      /pattern2/g,
-    ];
-    
-    return patterns.some(pattern => pattern.test(line));
   }
 }
 ```
@@ -166,15 +129,15 @@ describe('New Vulnerability Scanner', () => {
 
 ### 4. Add Integration
 
-Add your scanner to the `MCPScanner` class:
+Add your scanner to the `MCPScanner.ts` file:
 
 ```typescript
-import { NewVulnerabilityScanner } from "./scanners/NewVulnerabilityScanner";
+import { MyScanner } from "./scanners/MyScanner";
 
 // In the scanRepository method:
-const newVulnerabilityScanner = new NewVulnerabilityScanner();
-const newVulnerabilities = await newVulnerabilityScanner.scan(tempDir.name);
-this.vulnerabilities.push(...newVulnerabilities);
+const myScanner = new MyScanner();
+const vulnerabilities = await myScanner.scan(tempDir.name);
+this.vulnerabilities.push(...vulnerabilities);
 ```
 
 ### 5. Update Documentation
@@ -265,14 +228,7 @@ tests/fixtures/
    git rebase upstream/main
    ```
 
-2. **Run the full test suite**:
-   ```bash
-   npm test
-   npm run lint
-   npm run build
-   ```
-
-3. **Test with real repositories**:
+2. **Test with real repositories**:
    ```bash
    npm run dev scan https://github.com/some/mcp-server
    ```
@@ -294,19 +250,6 @@ tests/fixtures/
 4. **Documentation review** for completeness
 5. **Final approval** and merge
 
-## 🏆 Recognition
-
-Contributors will be:
-
-- **Listed in CHANGELOG.md** for each release
-- **Mentioned in README.md** contributors section
-- **Credited in release notes** for significant contributions
-
-## 📞 Getting Help
-
-- **GitHub Discussions**: For general questions and ideas
-- **GitHub Issues**: For bugs and specific feature requests
-- **Discord/Slack**: Link to community chat (if available)
 
 ## 🎯 Good First Issues
 
