@@ -15,7 +15,7 @@ Thank you for your interest in contributing to MCP Watch! This document provides
 1. **Fork the repository** on GitHub
 2. **Clone your fork** locally:
    ```bash
-   git clone https://github.com/yourusername/mcp-watch.git
+   git clone https://github.com/kapilduraphe/mcp-watch.git
    cd mcp-watch
    ```
 3. **Install dependencies**:
@@ -223,7 +223,7 @@ tests/fixtures/
 
 1. **Sync with upstream**:
    ```bash
-   git remote add upstream https://github.com/original/mcp-watch.git
+   git remote add upstream https://github.com/kapilduraphe/mcp-watch.git
    git fetch upstream
    git rebase upstream/main
    ```
