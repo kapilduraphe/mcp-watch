@@ -31,7 +31,7 @@ npm install mcp-watch
 
 ### From Source
 ```bash
-git clone https://github.com/yourusername/mcp-watch.git
+git clone https://github.com/kapilduraphe/mcp-watch.git
 cd mcp-watch
 npm install
 npm run build
