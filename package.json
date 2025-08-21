@@ -8,9 +8,9 @@
   },
   "scripts": {
     "build": "tsc",
-    "dev": "ts-node main.ts",
+    "dev": "ts-node src/main.ts",
     "start": "node dist/main.js",
-    "scan": "ts-node main.ts scan",
+    "scan": "ts-node src/main.ts scan",
     "clean": "rm -rf dist",
     "prepublishOnly": "npm run clean && npm run build",
     "prepare": "npm run build",

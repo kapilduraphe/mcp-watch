@@ -1,0 +1,23 @@
+FROM node:18-alpine
+
+# Install git and development tools
+RUN apk add --no-cache git
+
+# Set working directory
+WORKDIR /app
+
+# Copy package files
+COPY package*.json ./
+
+# Install all dependencies (including dev dependencies) but ignore scripts
+RUN npm install --ignore-scripts
+
+# Copy source code
+COPY . .
+
+# Expose port
+EXPOSE 3000
+
+# Start development server with proper entry point
+# The dev script runs ts-node main.ts, but we can also run commands directly
+CMD ["npm", "run", "dev"]
