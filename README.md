@@ -289,6 +289,25 @@ This tool is based on security research from leading organizations in AI and cyb
 4. Test your changes manually
 5. Submit a pull request
 
+## GitHub Actions 🚀
+
+This repository uses automated workflows for CI/CD, security scanning, and dependency management:
+
+- **CI**: Automated testing and Docker verification on every push/PR
+- **Security Scan**: Daily security audits and vulnerability checks
+- **Dependency Update**: Weekly dependency maintenance and security fixes
+- **Release**: Automated release asset creation
+- **Docker Test**: Docker-specific testing and validation
+
+## Dependabot 🤖
+
+Automated dependency management with:
+- **npm**: Weekly updates with auto-merge for minor/patch versions
+- **GitHub Actions**: Automated action updates
+- **Docker**: Base image updates
+
+See [GITHUB_ACTIONS.md](GITHUB_ACTIONS.md) for detailed workflow documentation.
+
 ### Docker Development Workflow 🐳
 
 ```bash
