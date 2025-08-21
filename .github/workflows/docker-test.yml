@@ -25,10 +25,10 @@ jobs:
         docker run --rm mcp-watch scan --help
 
         echo "🧪 Testing development image..."
-        docker run --rm mcp-watch-dev npm --version
+        docker run --rm mcp-watch-mcp-watch-dev npm --version
 
     - name: Test Docker Compose
       run: |
         echo "🧪 Testing Docker Compose..."
-        docker-compose build
-        docker-compose run --rm mcp-watch-dev npm run scan -- --help
+        docker compose build
+        docker compose run --rm mcp-watch-dev npm run scan -- --help
