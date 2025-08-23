@@ -13,22 +13,18 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Build images
+    - name: Build image
       run: |
         docker build -t mcp-watch .
-        docker build -f Dockerfile.dev -t mcp-watch-dev .
 
-    - name: Test images
+    - name: Test image
       run: |
         echo "🧪 Testing production image..."
         docker run --rm mcp-watch --version
         docker run --rm mcp-watch scan --help
 
-        echo "🧪 Testing development image..."
-        docker run --rm mcp-watch-dev npm --version
-
     - name: Test Docker Compose
       run: |
         echo "🧪 Testing Docker Compose..."
         docker compose build
-        docker compose run --rm mcp-watch-dev npm run scan -- --help
+        docker compose run --rm mcp-watch npm run scan -- --help

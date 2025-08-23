@@ -50,20 +50,21 @@ cd mcp-watch
 docker build -t mcp-watch .
 ```
 
-#### Docker Compose (Recommended for Development)
+#### Docker Compose (Recommended for Production)
 ```bash
-# Build and run development container
-docker-compose up mcp-watch-dev
+# Build and run production container
+docker-compose build
+docker-compose up mcp-watch
 
 # Run individual commands
-docker-compose run --rm mcp-watch-dev npm run scan -- https://github.com/user/repo
+docker-compose run --rm mcp-watch scan https://github.com/user/repo
 ```
 
 #### Docker Features
 - **🔒 Security**: Non-root user, minimal attack surface
 - **📦 Optimized**: Multi-stage builds, Alpine Linux base
-- **🔄 Development**: Hot reload, source code mounting
 - **🚀 Production**: Ready for deployment and CI/CD
+- **🧹 Simplified**: Single optimized Dockerfile for all use cases
 
 ## Usage
 
@@ -94,12 +95,12 @@ mcp-watch scan https://github.com/user/mcp-server --category credential-leak
 docker run --rm mcp-watch scan https://github.com/user/mcp-server
 docker run --rm mcp-watch scan https://github.com/user/mcp-server --format json --severity high
 
-# Development container
-docker-compose run --rm mcp-watch-dev npm run scan -- https://github.com/user/repo
-docker-compose run --rm mcp-watch-dev npm run scan -- https://github.com/user/repo --format json
+# Docker Compose
+docker-compose run --rm mcp-watch scan https://github.com/user/repo
+docker-compose run --rm mcp-watch scan https://github.com/user/repo --format json
 
-# Interactive development
-docker-compose up mcp-watch-dev
+# Interactive container
+docker run -it --rm mcp-watch sh
 ```
 
 ### Options
@@ -171,7 +172,6 @@ mcp-watch/
 │   └── reportFormatter.ts          # Report formatting
 └── Docker/                          # Containerization
     ├── Dockerfile                   # Production image
-    ├── Dockerfile.dev               # Development image
     ├── docker-compose.yml           # Multi-service orchestration
     └── .dockerignore                # Build optimization
 ```
@@ -189,21 +189,38 @@ npm run scan https://github.com/user/repo
 
 # Clean build artifacts
 npm run clean
+
+# Type checking
+npm run type-check
 ```
 
-### Docker Development 🐳
-```bash
-# Build Docker images
-docker-compose build
+### Development Workflow 🚀
 
-# Development with hot reload
-docker-compose up mcp-watch-dev
+#### Local Development (Recommended)
+```bash
+# Install dependencies
+npm install
+
+# Run development server
+npm run dev
+
+# Run scans during development
+npm run scan https://github.com/user/repo
+
+# Type checking
+npm run type-check
+```
+
+#### Docker Development 🐳
+```bash
+# Build Docker image
+docker-compose build
 
 # Production testing
 docker run --rm mcp-watch scan https://github.com/user/repo
 
-# Interactive shell
-docker-compose run --rm mcp-watch-dev sh
+# Test Docker Compose
+docker-compose run --rm mcp-watch scan --help
 ```
 
 ### Adding New Scanners
@@ -315,17 +332,14 @@ See [GITHUB_ACTIONS.md](GITHUB_ACTIONS.md) for detailed workflow documentation.
 git clone https://github.com/kapilduraphe/mcp-watch.git
 cd mcp-watch
 
-# Build Docker images
+# Build Docker image
 docker-compose build
-
-# Run tests in container
-docker-compose run --rm mcp-watch-dev npm run type-check
-
-# Interactive development
-docker-compose up mcp-watch-dev
 
 # Test production build
 docker run --rm mcp-watch scan --help
+
+# Run scans in container
+docker-compose run --rm mcp-watch scan https://github.com/user/repo
 ```
 
 ## License

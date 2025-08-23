@@ -7,18 +7,3 @@ services:
     # For production use, uncomment the command below:
     # command: ["scan", "https://github.com/user/repo"]
     # For interactive use, keep the default entrypoint
-
-  # Development with hot reload
-  mcp-watch-dev:
-    build: 
-      context: .
-      dockerfile: Dockerfile.dev
-    container_name: mcp-watch-dev
-    volumes:
-      - ./src:/app/src
-      - ./package*.json:/app/package*.json
-      - ./tsconfig.json:/app/tsconfig.json
-      - /app/node_modules
-    environment:
-      - NODE_ENV=development
-    command: ["npm", "run", "dev"]

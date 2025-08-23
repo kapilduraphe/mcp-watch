@@ -33,10 +33,12 @@ docker-compose run --rm mcp-watch-dev npm run scan -- https://github.com/user/re
 - **Security**: Runs as non-root user
 - **Features**: Multi-stage build, production dependencies only
 
-### Development Image (`Dockerfile.dev`)
-- **Base**: Node.js 18 Alpine Linux
-- **Size**: ~200MB (includes dev dependencies)
-- **Features**: Hot reload, source code mounting, development tools
+### Development
+For local development, you can run the application directly on your host machine:
+```bash
+npm install
+npm run dev
+```
 
 ## Docker Compose
 
@@ -51,22 +53,7 @@ mcp-watch:
     - NODE_ENV=production
 ```
 
-#### `mcp-watch-dev` (Development)
-```yaml
-mcp-watch-dev:
-  build: 
-    context: .
-    dockerfile: Dockerfile.dev
-  container_name: mcp-watch-dev
-  volumes:
-    - ./src:/app/src
-    - ./package*.json:/app/package*.json
-    - ./tsconfig.json:/app/tsconfig.json
-    - /app/node_modules
-  environment:
-    - NODE_ENV=development
-  command: ["npm", "run", "dev"]
-```
+
 
 ## Usage Examples
 
@@ -84,22 +71,19 @@ docker run --rm mcp-watch scan https://github.com/user/mcp-server --format json
 
 ### Development Workflow
 ```bash
-# Start development container
-docker-compose up mcp-watch-dev
+# Run development server locally
+npm run dev
 
 # Run scans during development
-docker-compose run --rm mcp-watch-dev npm run scan -- https://github.com/user/repo
+npm run scan -- https://github.com/user/repo
 
 # Check help
-docker-compose run --rm mcp-watch-dev npm run scan -- --help
+npm run scan -- --help
 ```
 
 ### Interactive Development
 ```bash
-# Enter container shell
-docker-compose run --rm mcp-watch-dev sh
-
-# Inside container
+# Run commands directly
 npm run dev scan https://github.com/user/repo
 npm run type-check
 ```
@@ -118,16 +102,13 @@ docker build -t mcp-watch:v2.0.0 .
 docker build --no-cache -t mcp-watch .
 ```
 
-### Development Build
+### Development
 ```bash
-# Build development image
-docker-compose build mcp-watch-dev
+# Install dependencies
+npm install
 
-# Build all services
-docker-compose build
-
-# Rebuild without cache
-docker-compose build --no-cache
+# Run development server
+npm run dev
 ```
 
 ## Environment Variables
