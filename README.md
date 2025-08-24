@@ -37,11 +37,14 @@ npm install
 npm run build
 ```
 
+
+
 ### Docker Installation 🐳
 
 #### Quick Start with Docker
 ```bash
-# Pull and run directly (no installation needed)
+# Build and run locally
+docker build -t mcp-watch .
 docker run --rm mcp-watch scan https://github.com/user/mcp-server
 
 # Build from source
@@ -51,20 +54,24 @@ docker build -t mcp-watch .
 ```
 
 #### Docker Compose (Recommended for Production)
-```bash
-# Build and run production container
-docker-compose build
-docker-compose up mcp-watch
 
-# Run individual commands
-docker-compose run --rm mcp-watch scan https://github.com/user/repo
+```bash
+# Build and run with Docker Compose
+docker compose build
+docker compose up mcp-watch
+
+# Or run a one-off scan
+docker compose run --rm mcp-watch scan https://github.com/user/repo
 ```
+
+
 
 #### Docker Features
 - **🔒 Security**: Non-root user, minimal attack surface
 - **📦 Optimized**: Multi-stage builds, Alpine Linux base
 - **🚀 Production**: Ready for deployment and CI/CD
 - **🧹 Simplified**: Single optimized Dockerfile for all use cases
+
 
 ## Usage
 
@@ -96,8 +103,8 @@ docker run --rm mcp-watch scan https://github.com/user/mcp-server
 docker run --rm mcp-watch scan https://github.com/user/mcp-server --format json --severity high
 
 # Docker Compose
-docker-compose run --rm mcp-watch scan https://github.com/user/repo
-docker-compose run --rm mcp-watch scan https://github.com/user/repo --format json
+docker compose run --rm mcp-watch scan https://github.com/user/repo
+docker compose run --rm mcp-watch scan https://github.com/user/repo --format json
 
 # Interactive container
 docker run -it --rm mcp-watch sh
@@ -172,7 +179,7 @@ mcp-watch/
 │   └── reportFormatter.ts          # Report formatting
 └── Docker/                          # Containerization
     ├── Dockerfile                   # Production image
-    ├── docker-compose.yml           # Multi-service orchestration
+    ├── docker-compose.yml           # Multi-service orchestration (Docker Compose v2)
     └── .dockerignore                # Build optimization
 ```
 
@@ -214,13 +221,13 @@ npm run type-check
 #### Docker Development 🐳
 ```bash
 # Build Docker image
-docker-compose build
+docker compose build
 
-# Production testing
+# Test the image
 docker run --rm mcp-watch scan https://github.com/user/repo
 
 # Test Docker Compose
-docker-compose run --rm mcp-watch scan --help
+docker compose run --rm mcp-watch scan --help
 ```
 
 ### Adding New Scanners
@@ -333,13 +340,13 @@ git clone https://github.com/kapilduraphe/mcp-watch.git
 cd mcp-watch
 
 # Build Docker image
-docker-compose build
+docker compose build
 
-# Test production build
-docker run --rm mcp-watch scan --help
+# Test the image
+docker run --rm mcp-watch --help
 
-# Run scans in container
-docker-compose run --rm mcp-watch scan https://github.com/user/repo
+# Run a scan
+docker compose run --rm mcp-watch scan https://github.com/user/repo
 ```
 
 ## License
@@ -355,8 +362,9 @@ MIT License - see [LICENSE](LICENSE) file for details.
 ### Docker Support 🐳
 
 - **Documentation**: See [DOCKER.md](DOCKER.md) for detailed Docker usage
-- **Issues**: Include Docker version and compose version when reporting issues
+- **Issues**: Include Docker version and Docker Compose version when reporting issues
 - **Testing**: Test with both production and development containers
+
 
 ---
 

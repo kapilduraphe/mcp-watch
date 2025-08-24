@@ -41,8 +41,5 @@ RUN chown -R nodejs:nodejs /app
 # Switch to nodejs user
 USER nodejs
 
-# Expose port (if you want to run as a service)
-EXPOSE 3000
-
 # Set the entrypoint
 ENTRYPOINT ["node", "dist/main.js"]
