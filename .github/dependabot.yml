@@ -28,8 +28,6 @@ updates:
     labels:
       - "dependencies"
       - "automated"
-    # Auto-merge minor and patch updates if CI passes
-    auto-merge: true
     # Rebase on conflicts
     rebase-strategy: "auto"
 
@@ -56,7 +54,6 @@ updates:
     labels:
       - "github-actions"
       - "automated"
-    auto-merge: true
     rebase-strategy: "auto"
 
   # Enable version updates for Docker
@@ -78,5 +75,4 @@ updates:
     labels:
       - "docker"
       - "automated"
-    auto-merge: true
     rebase-strategy: "auto"
