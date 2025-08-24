@@ -1,0 +1,33 @@
+name: Release
+
+on:
+  release:
+    types: [ published ]
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Build
+      run: npm run build
+
+    - name: Test build
+      run: node dist/main.js --version
+
+    - name: Create release assets
+      run: |
+        echo "📦 Creating release assets..."
+        tar -czf mcp-watch-${{ github.event.release.tag_name }}.tar.gz dist/
+        ls -la *.tar.gz

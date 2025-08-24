@@ -1,0 +1,43 @@
+name: Dependency Update
+
+on:
+  schedule:
+    - cron: '0 1 * * 0'  # Weekly on Sundays at 1 AM UTC
+  workflow_dispatch:
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Check for outdated packages
+      run: npm outdated || true
+
+    - name: Run security audit
+      run: npm audit || true
+
+    - name: Update dependencies
+      run: |
+        echo "🔄 Updating dependencies..."
+        npm update
+        npm audit fix --audit-level=moderate || true
+
+    - name: Install updated dependencies
+      run: npm ci
+
+    - name: Test build
+      run: |
+        npm run type-check
+        npm run build
+        node dist/main.js --version

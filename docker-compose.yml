@@ -1,0 +1,9 @@
+services:
+  mcp-watch:
+    build: .
+    container_name: mcp-watch
+    environment:
+      - NODE_ENV=production
+    # For production use, uncomment the command below:
+    # command: ["scan", "https://github.com/user/repo"]
+    # For interactive use, keep the default entrypoint

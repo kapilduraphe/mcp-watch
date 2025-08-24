@@ -37,6 +37,42 @@ npm install
 npm run build
 ```
 
+
+
+### Docker Installation 🐳
+
+#### Quick Start with Docker
+```bash
+# Build and run locally
+docker build -t mcp-watch .
+docker run --rm mcp-watch scan https://github.com/user/mcp-server
+
+# Build from source
+git clone https://github.com/kapilduraphe/mcp-watch.git
+cd mcp-watch
+docker build -t mcp-watch .
+```
+
+#### Docker Compose (Recommended for Production)
+
+```bash
+# Build and run with Docker Compose
+docker compose build
+docker compose up mcp-watch
+
+# Or run a one-off scan
+docker compose run --rm mcp-watch scan https://github.com/user/repo
+```
+
+
+
+#### Docker Features
+- **🔒 Security**: Non-root user, minimal attack surface
+- **📦 Optimized**: Multi-stage builds, Alpine Linux base
+- **🚀 Production**: Ready for deployment and CI/CD
+- **🧹 Simplified**: Single optimized Dockerfile for all use cases
+
+
 ## Usage
 
 ### Command Line
@@ -58,6 +94,21 @@ mcp-watch scan https://github.com/user/mcp-server --category credential-leak
 **Note:** If you don't want to download npm then just substitute `mcp-watch` with `node dist/main.js`.
 
 **Example:** `node dist/main.js scan https://github.com/user/repo`
+
+### Docker Usage 🐳
+
+```bash
+# Production container
+docker run --rm mcp-watch scan https://github.com/user/mcp-server
+docker run --rm mcp-watch scan https://github.com/user/mcp-server --format json --severity high
+
+# Docker Compose
+docker compose run --rm mcp-watch scan https://github.com/user/repo
+docker compose run --rm mcp-watch scan https://github.com/user/repo --format json
+
+# Interactive container
+docker run -it --rm mcp-watch sh
+```
 
 ### Options
 
@@ -124,8 +175,12 @@ mcp-watch/
 │       ├── CredentialScanner.ts
 │       ├── ParameterInjectionScanner.ts
 │       └── ...
-└── utils/
-    └── reportFormatter.ts          # Report formatting
+├── utils/
+│   └── reportFormatter.ts          # Report formatting
+└── Docker/                          # Containerization
+    ├── Dockerfile                   # Production image
+    ├── docker-compose.yml           # Multi-service orchestration (Docker Compose v2)
+    └── .dockerignore                # Build optimization
 ```
 
 ### Development Scripts
@@ -141,6 +196,38 @@ npm run scan https://github.com/user/repo
 
 # Clean build artifacts
 npm run clean
+
+# Type checking
+npm run type-check
+```
+
+### Development Workflow 🚀
+
+#### Local Development (Recommended)
+```bash
+# Install dependencies
+npm install
+
+# Run development server
+npm run dev
+
+# Run scans during development
+npm run scan https://github.com/user/repo
+
+# Type checking
+npm run type-check
+```
+
+#### Docker Development 🐳
+```bash
+# Build Docker image
+docker compose build
+
+# Test the image
+docker run --rm mcp-watch scan https://github.com/user/repo
+
+# Test Docker Compose
+docker compose run --rm mcp-watch scan --help
 ```
 
 ### Adding New Scanners
@@ -226,6 +313,42 @@ This tool is based on security research from leading organizations in AI and cyb
 4. Test your changes manually
 5. Submit a pull request
 
+## GitHub Actions 🚀
+
+This repository uses automated workflows for CI/CD, security scanning, and dependency management:
+
+- **CI**: Automated testing and Docker verification on every push/PR
+- **Security Scan**: Daily security audits and vulnerability checks
+- **Dependency Update**: Weekly dependency maintenance and security fixes
+- **Release**: Automated release asset creation
+- **Docker Test**: Docker-specific testing and validation
+
+## Dependabot 🤖
+
+Automated dependency management with:
+- **npm**: Weekly updates with auto-merge for minor/patch versions
+- **GitHub Actions**: Automated action updates
+- **Docker**: Base image updates
+
+See [GITHUB_ACTIONS.md](GITHUB_ACTIONS.md) for detailed workflow documentation.
+
+### Docker Development Workflow 🐳
+
+```bash
+# Clone and setup
+git clone https://github.com/kapilduraphe/mcp-watch.git
+cd mcp-watch
+
+# Build Docker image
+docker compose build
+
+# Test the image
+docker run --rm mcp-watch --help
+
+# Run a scan
+docker compose run --rm mcp-watch scan https://github.com/user/repo
+```
+
 ## License
 
 MIT License - see [LICENSE](LICENSE) file for details.
@@ -235,6 +358,13 @@ MIT License - see [LICENSE](LICENSE) file for details.
 - Create an issue for bug reports or feature requests
 - Check existing issues before creating new ones
 - Include scan output and repository details when reporting issues
+
+### Docker Support 🐳
+
+- **Documentation**: See [DOCKER.md](DOCKER.md) for detailed Docker usage
+- **Issues**: Include Docker version and Docker Compose version when reporting issues
+- **Testing**: Test with both production and development containers
+
 
 ---
 
