@@ -23,7 +23,7 @@
     "url": "git+https://github.com/kapilduraphe/mcp-watch.git"
   },
   "dependencies": {
-    "commander": "^11.1.0",
+    "commander": "^14.0.0",
     "tmp": "^0.2.1"
   },
   "devDependencies": {
