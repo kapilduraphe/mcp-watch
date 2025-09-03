@@ -31,7 +31,7 @@
     "@types/tmp": "^0.2.4",
     "@types/jest": "^30.0.0",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
-    "@typescript-eslint/parser": "^6.0.0",
+    "@typescript-eslint/parser": "^8.41.0",
     "ts-node": "^10.9.0",
     "typescript": "^5.0.0"
   },
