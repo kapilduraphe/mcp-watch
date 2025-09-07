@@ -17,6 +17,42 @@ A comprehensive security scanner for Model Context Protocol (MCP) servers that d
 - **🌊 Toxic Flows** - Identifies dangerous data flow patterns
 - **🔐 Permission Issues** - Finds excessive permissions and access control problems
 
+## Quick Start 🚀
+
+### Option 1: NPM Package (Recommended)
+```bash
+# Install globally
+npm install -g mcp-watch
+
+# Scan any GitHub MCP repository
+mcp-watch scan https://github.com/user/mcp-server
+
+# Scan your local MCP project
+mcp-watch scan-local /path/to/your/mcp-project
+```
+
+### Option 2: From GitHub Source
+```bash
+# Clone and use immediately
+git clone https://github.com/kapilduraphe/mcp-watch.git
+cd mcp-watch
+npm install
+npm run build
+
+# Scan GitHub repos
+npm run scan:github https://github.com/user/mcp-server
+
+# Scan local projects  
+npm run scan:local /path/to/your/mcp-project
+```
+
+### Option 3: Docker (No Installation)
+```bash
+# Scan without installing anything
+docker run --rm mcp-watch scan https://github.com/user/mcp-server
+docker run --rm -v $(pwd):/workspace mcp-watch scan-local /workspace
+```
+
 ## Installation
 
 ### Global Installation
@@ -77,6 +113,7 @@ docker compose run --rm mcp-watch scan https://github.com/user/repo
 
 ### Command Line
 
+#### Scan GitHub Repositories
 ```bash
 # Scan a GitHub repository
 mcp-watch scan https://github.com/user/mcp-server
@@ -91,9 +128,50 @@ mcp-watch scan https://github.com/user/mcp-server --severity high
 mcp-watch scan https://github.com/user/mcp-server --category credential-leak
 ```
 
-**Note:** If you don't want to download npm then just substitute `mcp-watch` with `node dist/main.js`.
+#### Scan Local Projects
+```bash
+# Scan current directory
+mcp-watch scan-local .
 
-**Example:** `node dist/main.js scan https://github.com/user/repo`
+# Scan specific directory (absolute path)
+mcp-watch scan-local /path/to/your/mcp-project
+
+# Scan specific directory (relative path)
+mcp-watch scan-local ../my-mcp-server
+
+# Local scan with JSON output
+mcp-watch scan-local . --format json
+
+# Local scan with severity filter
+mcp-watch scan-local . --severity high
+```
+
+### Installation Method Usage
+
+#### From NPM Package
+```bash
+# Global installation (recommended)
+npm install -g mcp-watch
+mcp-watch scan https://github.com/user/mcp-server
+mcp-watch scan-local /path/to/project
+```
+
+#### From GitHub Source
+```bash
+# Clone and build
+git clone https://github.com/kapilduraphe/mcp-watch.git
+cd mcp-watch
+npm install
+npm run build
+
+# Use built version
+node dist/main.js scan https://github.com/user/mcp-server
+node dist/main.js scan-local /path/to/project
+
+# Or use npm scripts
+npm run scan https://github.com/user/mcp-server
+npm run scan-local /path/to/project
+```
 
 ### Docker Usage 🐳
 

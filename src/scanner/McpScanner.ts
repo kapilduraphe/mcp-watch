@@ -102,6 +102,72 @@ export class MCPScanner {
   }
 
   /**
+   * Scans a local project directory for MCP security vulnerabilities
+   *
+   * @param projectPath - The local project directory path to scan
+   * @returns Promise resolving to array of discovered vulnerabilities
+   *
+   * @example
+   * ```typescript
+   * const scanner = new MCPScanner();
+   * const vulns = await scanner.scanLocalProject('./my-mcp-server');
+   * console.log(`Found ${vulns.length} vulnerabilities`);
+   * ```
+   */
+  async scanLocalProject(projectPath: string): Promise<Vulnerability[]> {
+    console.log(`🔍 Scanning local project: ${projectPath}`);
+    console.log(
+      "📊 Based on vulnerablemcp.info, HiddenLayer, Invariant Labs, and Trail of Bits research\n"
+    );
+
+    // Validate that the project path exists
+    if (!fs.existsSync(projectPath)) {
+      throw new Error(`Project path does not exist: ${projectPath}`);
+    }
+
+    const stat = fs.statSync(projectPath);
+    if (!stat.isDirectory()) {
+      throw new Error(`Project path is not a directory: ${projectPath}`);
+    }
+
+    // Initialize all scanners
+    const credentialScanner = new CredentialScanner();
+    const toolPoisoningScanner = new ToolPoisoningScanner();
+    const parameterInjectionScanner = new ParameterInjectionScanner();
+    const promptInjectionScanner = new PromptInjectionScanner();
+    const toolMutationScanner = new ToolMutationScanner();
+    const conversationExfiltrationScanner =
+      new ConversationExfiltrationScanner();
+    const ansiInjectionScanner = new AnsiInjectionScanner();
+    const protocolViolationScanner = new ProtocolViolationScanner();
+    const inputValidationScanner = new InputValidationScanner();
+    const serverSpoofingScanner = new ServerSpoofingScanner();
+    const toxicFlowScanner = new ToxicFlowScanner();
+    const permissionScanner = new PermissionScanner();
+
+    // Core vulnerability scans based on documented research
+    const scanResults = await Promise.all([
+      credentialScanner.scan(projectPath),
+      toolPoisoningScanner.scan(projectPath),
+      parameterInjectionScanner.scan(projectPath),
+      promptInjectionScanner.scan(projectPath),
+      toolMutationScanner.scan(projectPath),
+      conversationExfiltrationScanner.scan(projectPath),
+      ansiInjectionScanner.scan(projectPath),
+      protocolViolationScanner.scan(projectPath),
+      inputValidationScanner.scan(projectPath),
+      serverSpoofingScanner.scan(projectPath),
+      toxicFlowScanner.scan(projectPath),
+      permissionScanner.scan(projectPath),
+    ]);
+
+    // Flatten all vulnerabilities from all scanners
+    this.vulnerabilities = scanResults.flat();
+
+    return this.vulnerabilities;
+  }
+
+  /**
    * Clones a Git repository to a temporary directory
    *
    * @param url - The repository URL to clone
