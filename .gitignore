@@ -30,6 +30,7 @@ ehthumbs.db
 Thumbs.db
 
 # IDE files
+.devcontainer/
 .vscode/
 .idea/
 *.swp
