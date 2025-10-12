@@ -47,12 +47,9 @@ RUN rm -rf /usr/local/bin/docker-entrypoint.sh \
     /usr/local/bin/npx \
     /usr/local/lib/node_modules/npm \
     /usr/local/lib/node_modules/corepack && \
-    find /usr -type f \( -name "curl" -o \) -delete && \
     find /bin /sbin /usr/bin /usr/sbin -type f \( \
-        -name "apk" -o -name "apk-tools" -o \
-        -name "curl" -o -name "openssh*" \
+        -name "apk" -o -name "apk-tools" -o -name "openssh*" \
     \) -delete 2>/dev/null || true
-
 
 # Switch to nodejs user
 USER nodejs
