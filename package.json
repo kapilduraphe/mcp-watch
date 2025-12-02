@@ -1,6 +1,6 @@
 {
   "name": "mcp-watch",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Security scanner for Model Context Protocol (MCP) servers - detect vulnerabilities and security issues",
   "main": "dist/main.js",
   "bin": {
