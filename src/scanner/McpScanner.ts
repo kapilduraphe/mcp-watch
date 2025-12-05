@@ -1,20 +1,20 @@
-import * as fs from "fs";
-import * as path from "path";
-import { spawnSync } from "child_process";
-import * as tmp from "tmp";
-import { Vulnerability } from "../types/Vulnerability";
-import { CredentialScanner } from "./scanners/CredentialScanner";
-import { ToolPoisoningScanner } from "./scanners/ToolPoisoningScanner";
-import { ParameterInjectionScanner } from "./scanners/ParameterInjectionScanner";
-import { PromptInjectionScanner } from "./scanners/PromptInjectionScanner";
-import { ToolMutationScanner } from "./scanners/ToolMutationScanner";
-import { ConversationExfiltrationScanner } from "./scanners/ConversationExfiltrationScanner";
-import { AnsiInjectionScanner } from "./scanners/AnsiInjectionScanner";
-import { ProtocolViolationScanner } from "./scanners/ProtocolViolationScanner";
-import { InputValidationScanner } from "./scanners/InputValidationScanner";
-import { ServerSpoofingScanner } from "./scanners/ServerSpoofingScanner";
-import { ToxicFlowScanner } from "./scanners/ToxicFlowScanner";
-import { PermissionScanner } from "./scanners/PermissionScanner";
+import * as fs from 'fs';
+import * as path from 'path';
+import { spawnSync } from 'child_process';
+import * as tmp from 'tmp';
+import { Vulnerability } from '../types/Vulnerability';
+import { CredentialScanner } from './scanners/CredentialScanner';
+import { ToolPoisoningScanner } from './scanners/ToolPoisoningScanner';
+import { ParameterInjectionScanner } from './scanners/ParameterInjectionScanner';
+import { PromptInjectionScanner } from './scanners/PromptInjectionScanner';
+import { ToolMutationScanner } from './scanners/ToolMutationScanner';
+import { ConversationExfiltrationScanner } from './scanners/ConversationExfiltrationScanner';
+import { AnsiInjectionScanner } from './scanners/AnsiInjectionScanner';
+import { ProtocolViolationScanner } from './scanners/ProtocolViolationScanner';
+import { InputValidationScanner } from './scanners/InputValidationScanner';
+import { ServerSpoofingScanner } from './scanners/ServerSpoofingScanner';
+import { ToxicFlowScanner } from './scanners/ToxicFlowScanner';
+import { PermissionScanner } from './scanners/PermissionScanner';
 
 /**
  * MCPScanner - Comprehensive security scanner for Model Context Protocol (MCP) servers
@@ -53,13 +53,13 @@ export class MCPScanner {
   async scanRepository(githubUrl: string): Promise<Vulnerability[]> {
     console.log(`🔍 Scanning repository: ${githubUrl}`);
     console.log(
-      "📊 Based on vulnerablemcp.info, HiddenLayer, Invariant Labs, and Trail of Bits research\n"
+      '📊 Based on vulnerablemcp.info, HiddenLayer, Invariant Labs, and Trail of Bits research\n',
     );
 
     const tempDir = tmp.dirSync({ unsafeCleanup: true });
 
     try {
-      await this.cloneRepo(githubUrl, tempDir.name);
+      this.cloneRepo(githubUrl, tempDir.name);
 
       // Initialize all scanners
       const credentialScanner = new CredentialScanner();
@@ -117,7 +117,7 @@ export class MCPScanner {
   async scanLocalProject(projectPath: string): Promise<Vulnerability[]> {
     console.log(`🔍 Scanning local project: ${projectPath}`);
     console.log(
-      "📊 Based on vulnerablemcp.info, HiddenLayer, Invariant Labs, and Trail of Bits research\n"
+      '📊 Based on vulnerablemcp.info, HiddenLayer, Invariant Labs, and Trail of Bits research\n',
     );
 
     // Validate that the project path exists
@@ -175,18 +175,19 @@ export class MCPScanner {
    * @throws {Error} When git clone fails
    * @private
    */
-  private async cloneRepo(url: string, targetDir: string) {
+  private cloneRepo(url: string, targetDir: string) {
     try {
-      console.log("📥 Cloning repository...");
-      const result = spawnSync("git", ["clone", "--depth", "1", url, targetDir], {
-        stdio: "pipe",
-        encoding: "utf-8",
+      console.log('📥 Cloning repository...');
+      const result = spawnSync('git', ['clone', '--depth', '1', url, targetDir], {
+        stdio: 'pipe',
+        encoding: 'utf-8',
       });
 
       if (result.error || result.status !== 0) {
         throw new Error(`Git clone failed: ${result.stderr || result.error?.message}`);
       }
     } catch (error) {
+      /* eslint-disable-next-line @typescript-eslint/restrict-template-expressions */
       throw new Error(`Failed to clone repository: ${error}`);
     }
   }
@@ -211,11 +212,11 @@ export class MCPScanner {
 
           if (
             stat.isDirectory() &&
-            !item.startsWith(".") &&
-            item !== "node_modules" &&
-            item !== "dist" &&
-            item !== "build" &&
-            item !== "__pycache__"
+            !item.startsWith('.') &&
+            item !== 'node_modules' &&
+            item !== 'dist' &&
+            item !== 'build' &&
+            item !== '__pycache__'
           ) {
             traverse(fullPath);
           } else if (stat.isFile()) {
@@ -228,8 +229,10 @@ export class MCPScanner {
             }
           }
         }
+      /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
       } catch (error) {
         // Skip directories we can't read
+        // remove eslint-disable comment when this is patched
       }
     };
 

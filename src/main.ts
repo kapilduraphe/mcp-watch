@@ -1,30 +1,30 @@
 #!/usr/bin/env node
 
-import { Command } from "commander";
-import { MCPScanner } from "./scanner/McpScanner";
-import { formatReport } from "./utils/reportFormatter";
+import { Command } from 'commander';
+import { MCPScanner } from './scanner/McpScanner';
+import { formatReport } from './utils/reportFormatter';
 
 // CLI setup
 const program = new Command();
 
 program
-  .name("mcp-watch")
+  .name('mcp-watch')
   .description(
-    "Comprehensive MCP security scanner based on latest vulnerability research"
+    'Comprehensive MCP security scanner based on latest vulnerability research',
   )
-  .version("2.0.0");
+  .version('2.0.0');
 
 program
-  .command("scan")
-  .description("Scan an MCP server repository for security vulnerabilities")
-  .argument("<github-url>", "GitHub repository URL")
-  .option("-f, --format <type>", "Output format (console|json)", "console")
+  .command('scan')
+  .description('Scan an MCP server repository for security vulnerabilities')
+  .argument('<github-url>', 'GitHub repository URL')
+  .option('-f, --format <type>', 'Output format (console|json)', 'console')
   .option(
-    "--severity <level>",
-    "Minimum severity level (low|medium|high|critical)",
-    "low"
+    '--severity <level>',
+    'Minimum severity level (low|medium|high|critical)',
+    'low',
   )
-  .option("--category <cat>", "Filter by vulnerability category")
+  .option('--category <cat>', 'Filter by vulnerability category')
   .action(
     async (
       githubUrl: string,
@@ -32,7 +32,7 @@ program
         format: string;
         severity: string;
         category?: string;
-      }
+      },
     ) => {
       try {
         const scanner = new MCPScanner();
@@ -44,28 +44,28 @@ program
           severityOrder[options.severity as keyof typeof severityOrder] || 0;
 
         let vulnerabilities = allVulnerabilities.filter(
-          (v) => severityOrder[v.severity] >= minSeverity
+          (v) => severityOrder[v.severity] >= minSeverity,
         );
 
         if (options.category) {
           vulnerabilities = vulnerabilities.filter(
-            (v) => v.category === options.category
+            (v) => v.category === options.category,
           );
         }
 
-        if (options.format === "json") {
+        if (options.format === 'json') {
           console.log(
             JSON.stringify(
               {
                 repository: githubUrl,
                 scanDate: new Date().toISOString(),
-                scanner: "MCP Watch",
+                scanner: 'MCP Watch',
                 researchSources: [
-                  "VulnerableMCP Database",
-                  "HiddenLayer Research",
-                  "Invariant Labs Research",
-                  "Trail of Bits Research",
-                  "PromptHub Analysis",
+                  'VulnerableMCP Database',
+                  'HiddenLayer Research',
+                  'Invariant Labs Research',
+                  'Trail of Bits Research',
+                  'PromptHub Analysis',
                 ],
                 totalVulnerabilities: vulnerabilities.length,
                 severityCounts: vulnerabilities.reduce((acc, v) => {
@@ -79,8 +79,8 @@ program
                 vulnerabilities,
               },
               null,
-              2
-            )
+              2,
+            ),
           );
         } else {
           formatReport(vulnerabilities);
@@ -88,43 +88,43 @@ program
 
         // Exit with error code if critical/high vulnerabilities found
         const criticalOrHigh = vulnerabilities.filter(
-          (v) => v.severity === "critical" || v.severity === "high"
+          (v) => v.severity === 'critical' || v.severity === 'high',
         );
         if (criticalOrHigh.length > 0) {
           console.log(
-            `\n❌ Found ${criticalOrHigh.length} critical/high severity vulnerabilities`
+            `\n❌ Found ${criticalOrHigh.length} critical/high severity vulnerabilities`,
           );
-          console.log("🚨 Immediate action required!");
+          console.log('🚨 Immediate action required!');
           process.exit(1);
         } else {
           console.log(
-            "\n✅ No critical or high severity vulnerabilities found"
+            '\n✅ No critical or high severity vulnerabilities found',
           );
           console.log(
-            "💚 MCP server appears secure based on current research!"
+            '💚 MCP server appears secure based on current research!',
           );
         }
       } catch (error) {
         console.error(
-          "❌ Error:",
-          error instanceof Error ? error.message : error
+          '❌ Error:',
+          error instanceof Error ? error.message : error,
         );
         process.exit(1);
       }
-    }
+    },
   );
 
 program
-  .command("scan-local")
-  .description("Scan a local MCP server project directory for security vulnerabilities")
-  .argument("<project-path>", "Path to the local project directory")
-  .option("-f, --format <type>", "Output format (console|json)", "console")
+  .command('scan-local')
+  .description('Scan a local MCP server project directory for security vulnerabilities')
+  .argument('<project-path>', 'Path to the local project directory')
+  .option('-f, --format <type>', 'Output format (console|json)', 'console')
   .option(
-    "--severity <level>",
-    "Minimum severity level (low|medium|high|critical)",
-    "low"
+    '--severity <level>',
+    'Minimum severity level (low|medium|high|critical)',
+    'low',
   )
-  .option("--category <cat>", "Filter by vulnerability category")
+  .option('--category <cat>', 'Filter by vulnerability category')
   .action(
     async (
       projectPath: string,
@@ -132,7 +132,7 @@ program
         format: string;
         severity: string;
         category?: string;
-      }
+      },
     ) => {
       try {
         const scanner = new MCPScanner();
@@ -144,28 +144,28 @@ program
           severityOrder[options.severity as keyof typeof severityOrder] || 0;
 
         let vulnerabilities = allVulnerabilities.filter(
-          (v) => severityOrder[v.severity] >= minSeverity
+          (v) => severityOrder[v.severity] >= minSeverity,
         );
 
         if (options.category) {
           vulnerabilities = vulnerabilities.filter(
-            (v) => v.category === options.category
+            (v) => v.category === options.category,
           );
         }
 
-        if (options.format === "json") {
+        if (options.format === 'json') {
           console.log(
             JSON.stringify(
               {
-                projectPath: projectPath,
+                projectPath,
                 scanDate: new Date().toISOString(),
-                scanner: "MCP Watch",
+                scanner: 'MCP Watch',
                 researchSources: [
-                  "VulnerableMCP Database",
-                  "HiddenLayer Research",
-                  "Invariant Labs Research",
-                  "Trail of Bits Research",
-                  "PromptHub Analysis",
+                  'VulnerableMCP Database',
+                  'HiddenLayer Research',
+                  'Invariant Labs Research',
+                  'Trail of Bits Research',
+                  'PromptHub Analysis',
                 ],
                 totalVulnerabilities: vulnerabilities.length,
                 severityCounts: vulnerabilities.reduce((acc, v) => {
@@ -179,8 +179,8 @@ program
                 vulnerabilities,
               },
               null,
-              2
-            )
+              2,
+            ),
           );
         } else {
           formatReport(vulnerabilities);
@@ -188,30 +188,30 @@ program
 
         // Exit with error code if critical/high vulnerabilities found
         const criticalOrHigh = vulnerabilities.filter(
-          (v) => v.severity === "critical" || v.severity === "high"
+          (v) => v.severity === 'critical' || v.severity === 'high',
         );
         if (criticalOrHigh.length > 0) {
           console.log(
-            `\n❌ Found ${criticalOrHigh.length} critical/high severity vulnerabilities`
+            `\n❌ Found ${criticalOrHigh.length} critical/high severity vulnerabilities`,
           );
-          console.log("🚨 Immediate action required!");
+          console.log('🚨 Immediate action required!');
           process.exit(1);
         } else {
           console.log(
-            "\n✅ No critical or high severity vulnerabilities found"
+            '\n✅ No critical or high severity vulnerabilities found',
           );
           console.log(
-            "💚 MCP server appears secure based on current research!"
+            '💚 MCP server appears secure based on current research!',
           );
         }
       } catch (error) {
         console.error(
-          "❌ Error:",
-          error instanceof Error ? error.message : error
+          '❌ Error:',
+          error instanceof Error ? error.message : error,
         );
         process.exit(1);
       }
-    }
+    },
   );
 
 program.parse();

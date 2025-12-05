@@ -1,8 +1,8 @@
-import * as fs from "fs";
-import * as path from "path";
-import { AbstractScanner } from "../BaseScanner";
-import { Vulnerability } from "../../types/Vulnerability";
-import { MCPScanner } from "../McpScanner";
+import * as fs from 'fs';
+import * as path from 'path';
+import { AbstractScanner } from '../BaseScanner';
+import { Vulnerability } from '../../types/Vulnerability';
+import { MCPScanner } from '../McpScanner';
 
 /**
  * Scans for credential-related vulnerabilities
@@ -17,70 +17,70 @@ import { MCPScanner } from "../McpScanner";
  */
 export class CredentialScanner extends AbstractScanner {
   async scan(projectPath: string): Promise<Vulnerability[]> {
-    console.log("🔑 Scanning for credential vulnerabilities...");
+    console.log('🔑 Scanning for credential vulnerabilities...');
 
     const vulnerabilities: Vulnerability[] = [];
     const files = MCPScanner.getAllFiles(projectPath, [
-      ".ts",
-      ".js",
-      ".json",
-      ".env",
-      ".md",
-      ".yaml",
-      ".yml",
-      ".py",
+      '.ts',
+      '.js',
+      '.json',
+      '.env',
+      '.md',
+      '.yaml',
+      '.yml',
+      '.py',
     ]);
 
     for (const file of files) {
-      const content = fs.readFileSync(file, "utf8");
-      const lines = content.split("\n");
+      const content = fs.readFileSync(file, 'utf8');
+      const lines = content.split('\n');
 
       lines.forEach((line, index) => {
         // Hardcoded credentials (enhanced patterns)
         if (this.containsHardcodedCredentials(line)) {
           vulnerabilities.push({
-            id: "HARDCODED_CREDENTIALS",
-            severity: "critical",
-            category: "credential-leak",
-            message: "Hardcoded credentials detected",
+            id: 'HARDCODED_CREDENTIALS',
+            severity: 'critical',
+            category: 'credential-leak',
+            message: 'Hardcoded credentials detected',
             file: path.relative(projectPath, file),
             line: index + 1,
             evidence: this.sanitizeEvidence(line),
-            source: "Trail of Bits research",
+            source: 'Trail of Bits research',
           });
         }
 
         // Plaintext storage (Trail of Bits documented pattern)
         if (this.containsPlaintextStorage(line)) {
           vulnerabilities.push({
-            id: "PLAINTEXT_STORAGE",
-            severity: "high",
-            category: "credential-leak",
-            message: "Plaintext credential storage detected",
+            id: 'PLAINTEXT_STORAGE',
+            severity: 'high',
+            category: 'credential-leak',
+            message: 'Plaintext credential storage detected',
             file: path.relative(projectPath, file),
             line: index + 1,
             evidence: line.trim(),
-            source: "Trail of Bits research",
+            source: 'Trail of Bits research',
           });
         }
 
         // Insecure file permissions for credentials
         if (this.containsInsecureCredentialPermissions(line)) {
           vulnerabilities.push({
-            id: "INSECURE_CREDENTIAL_PERMISSIONS",
-            severity: "high",
-            category: "credential-leak",
-            message: "Credentials with world-readable permissions",
+            id: 'INSECURE_CREDENTIAL_PERMISSIONS',
+            severity: 'high',
+            category: 'credential-leak',
+            message: 'Credentials with world-readable permissions',
             file: path.relative(projectPath, file),
             line: index + 1,
             evidence: line.trim(),
-            source: "Trail of Bits research",
+            source: 'Trail of Bits research',
           });
         }
       });
     }
 
-    return vulnerabilities;
+    return await Promise.resolve(vulnerabilities);
   }
 
   /**
@@ -93,7 +93,7 @@ export class CredentialScanner extends AbstractScanner {
   private containsHardcodedCredentials(line: string): boolean {
     const patterns = [
       // Enhanced API key patterns
-      /(?:api[_-]?key|secret|token|password)\s*[:=]\s*["'][a-zA-Z0-9]{15,}["']/i,
+      /(?:api[_-]?key|secret|token|password)\s*[:=]\s*[''][a-zA-Z0-9]{15,}['']/i,
       /sk-[a-zA-Z0-9]{20,}/, // OpenAI
       /ghp_[a-zA-Z0-9]{36}/, // GitHub
       /xoxb-[a-zA-Z0-9-]{50,}/, // Slack
@@ -103,8 +103,8 @@ export class CredentialScanner extends AbstractScanner {
       /pk_[a-zA-Z0-9]{24}/, // Stripe
       /sk_[a-zA-Z0-9]{24}/, // Stripe Secret
       /dckr_pat_[a-zA-Z0-9_-]+/, // Docker
-      /["'][a-zA-Z0-9+/]{40,}={0,2}["']/, // Base64-like
-      /["']eyJ[a-zA-Z0-9_-]+\.eyJ[a-zA-Z0-9_-]+\.[a-zA-Z0-9_-]+["']/, // JWT
+      /[''][a-zA-Z0-9+/]{40,}={0,2}['']/, // Base64-like
+      /['']eyJ[a-zA-Z0-9_-]+\.eyJ[a-zA-Z0-9_-]+\.[a-zA-Z0-9_-]+['']/, // JWT
     ];
 
     return (
@@ -135,12 +135,12 @@ export class CredentialScanner extends AbstractScanner {
 
     const credentialIndicators = [
       /\b(?:token|key|secret|password|auth|credential|apiKey)\b/i,
-      /['"`](?:api[-_]?key|secret|token|password|auth)['"`]\s*:/i,
+      /[''`](?:api[-_]?key|secret|token|password|auth)[''`]\s*:/i,
       /process\.env\.[A-Z_]*(?:TOKEN|KEY|SECRET|PASSWORD)/i,
     ];
 
     const hasCredentialData = credentialIndicators.some((indicator) =>
-      indicator.test(line)
+      indicator.test(line),
     );
     if (!hasCredentialData) return false;
 

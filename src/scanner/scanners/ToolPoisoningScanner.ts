@@ -1,8 +1,8 @@
-import * as fs from "fs";
-import * as path from "path";
-import { AbstractScanner } from "../BaseScanner";
-import { Vulnerability } from "../../types/Vulnerability";
-import { MCPScanner } from "../McpScanner";
+import * as fs from 'fs';
+import * as path from 'path';
+import { AbstractScanner } from '../BaseScanner';
+import { Vulnerability } from '../../types/Vulnerability';
+import { MCPScanner } from '../McpScanner';
 
 /**
  * Scans for tool poisoning vulnerabilities
@@ -17,51 +17,51 @@ import { MCPScanner } from "../McpScanner";
  */
 export class ToolPoisoningScanner extends AbstractScanner {
   async scan(projectPath: string): Promise<Vulnerability[]> {
-    console.log("🧪 Scanning for tool poisoning vulnerabilities...");
+    console.log('🧪 Scanning for tool poisoning vulnerabilities...');
 
     const vulnerabilities: Vulnerability[] = [];
-    const files = MCPScanner.getAllFiles(projectPath, [".ts", ".js", ".py"]);
+    const files = MCPScanner.getAllFiles(projectPath, ['.ts', '.js', '.py']);
 
     for (const file of files) {
-      const content = fs.readFileSync(file, "utf8");
-      const lines = content.split("\n");
+      const content = fs.readFileSync(file, 'utf8');
+      const lines = content.split('\n');
 
       lines.forEach((line, index) => {
         // Hidden instructions in tool descriptions
         if (this.containsHiddenInstructions(line)) {
           vulnerabilities.push({
-            id: "HIDDEN_TOOL_INSTRUCTIONS",
-            severity: "critical",
-            category: "tool-poisoning",
-            message: "Hidden malicious instructions in tool description",
+            id: 'HIDDEN_TOOL_INSTRUCTIONS',
+            severity: 'critical',
+            category: 'tool-poisoning',
+            message: 'Hidden malicious instructions in tool description',
             file: path.relative(projectPath, file),
             line: index + 1,
             evidence: line.trim(),
-            source: "Invariant Labs research"
+            source: 'Invariant Labs research',
           });
         }
 
         // Deceptive tool naming
         if (this.containsDeceptiveToolNaming(line)) {
           vulnerabilities.push({
-            id: "DECEPTIVE_TOOL_NAMING",
-            severity: "high",
-            category: "tool-poisoning",
-            message: "Tool with deceptive name/description mismatch",
+            id: 'DECEPTIVE_TOOL_NAMING',
+            severity: 'high',
+            category: 'tool-poisoning',
+            message: 'Tool with deceptive name/description mismatch',
             file: path.relative(projectPath, file),
             line: index + 1,
             evidence: line.trim(),
-            source: "Invariant Labs research"
+            source: 'Invariant Labs research',
           });
         }
       });
     }
 
-    return vulnerabilities;
+    return Promise.resolve(vulnerabilities);
   }
 
   private containsHiddenInstructions(line: string): boolean {
-    return line.includes("description") && (
+    return line.includes('description') && (
       /ignore\s+(previous|all)\s+instructions/i.test(line) ||
       /system\s*:\s*you\s+are\s+now/i.test(line) ||
       /\[SYSTEM\]|\[ADMIN\]|\[OVERRIDE\]/i.test(line) ||
@@ -74,7 +74,7 @@ export class ToolPoisoningScanner extends AbstractScanner {
     const innocentNames = /calculator|math|time|weather|file.*read/i;
     const dangerousActions = /delete|remove|destroy|kill|hack|steal|exfiltrate/i;
     
-    return line.includes("name") && innocentNames.test(line) && 
+    return line.includes('name') && innocentNames.test(line) && 
            (dangerousActions.test(line) || /exec|eval|system/i.test(line));
   }
 }

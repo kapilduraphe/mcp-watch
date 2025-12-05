@@ -1,57 +1,57 @@
 // PermissionScanner.ts
-import * as fs from "fs";
-import * as path from "path";
-import { AbstractScanner } from "../BaseScanner";
-import { Vulnerability } from "../../types/Vulnerability";
-import { MCPScanner } from "../McpScanner";
+import * as fs from 'fs';
+import * as path from 'path';
+import { AbstractScanner } from '../BaseScanner';
+import { Vulnerability } from '../../types/Vulnerability';
+import { MCPScanner } from '../McpScanner';
 
 export class PermissionScanner extends AbstractScanner {
   async scan(projectPath: string): Promise<Vulnerability[]> {
-    console.log("🔐 Scanning for permission and access control issues...");
+    console.log('🔐 Scanning for permission and access control issues...');
 
     const vulnerabilities: Vulnerability[] = [];
     const files = MCPScanner.getAllFiles(projectPath, [
-      ".ts",
-      ".js",
-      ".json",
-      ".md",
-      ".py",
+      '.ts',
+      '.js',
+      '.json',
+      '.md',
+      '.py',
     ]);
 
     for (const file of files) {
-      const content = fs.readFileSync(file, "utf8");
-      const lines = content.split("\n");
+      const content = fs.readFileSync(file, 'utf8');
+      const lines = content.split('\n');
 
       lines.forEach((line, index) => {
         if (this.containsConsentFatiguePatterns(line)) {
           vulnerabilities.push({
-            id: "CONSENT_FATIGUE_RISK",
-            severity: "medium",
-            category: "access-control",
-            message: "Repeated consent requests - fatigue attack risk",
+            id: 'CONSENT_FATIGUE_RISK',
+            severity: 'medium',
+            category: 'access-control',
+            message: 'Repeated consent requests - fatigue attack risk',
             file: path.relative(projectPath, file),
             line: index + 1,
             evidence: line.trim(),
-            source: "VulnerableMCP database",
+            source: 'VulnerableMCP database',
           });
         }
 
         if (this.containsExcessivePermissions(line)) {
           vulnerabilities.push({
-            id: "EXCESSIVE_PERMISSIONS",
-            severity: "high",
-            category: "access-control",
-            message: "Excessive permissions - violates least privilege",
+            id: 'EXCESSIVE_PERMISSIONS',
+            severity: 'high',
+            category: 'access-control',
+            message: 'Excessive permissions - violates least privilege',
             file: path.relative(projectPath, file),
             line: index + 1,
             evidence: line.trim(),
-            source: "Security best practices",
+            source: 'Security best practices',
           });
         }
       });
     }
 
-    return vulnerabilities;
+    return Promise.resolve(vulnerabilities);
   }
 
   private containsConsentFatiguePatterns(line: string): boolean {
@@ -67,30 +67,30 @@ export class PermissionScanner extends AbstractScanner {
 
   private containsExcessivePermissions(line: string): boolean {
     const permissionKeywords = [
-      "admin",
-      "root",
-      "superuser",
-      "delete",
-      "remove",
-      "destroy",
-      "create",
-      "modify",
-      "update",
-      "full access",
-      "all permissions",
-      "unrestricted",
-      "elevated",
-      "privileged",
+      'admin',
+      'root',
+      'superuser',
+      'delete',
+      'remove',
+      'destroy',
+      'create',
+      'modify',
+      'update',
+      'full access',
+      'all permissions',
+      'unrestricted',
+      'elevated',
+      'privileged',
     ];
 
     return permissionKeywords.some(
       (keyword) =>
         line.toLowerCase().includes(keyword) &&
-        (line.includes("user") ||
-          line.includes("permission") ||
-          line.includes("scope") ||
-          line.includes("role") ||
-          line.includes("access"))
+        (line.includes('user') ||
+          line.includes('permission') ||
+          line.includes('scope') ||
+          line.includes('role') ||
+          line.includes('access')),
     );
   }
 }

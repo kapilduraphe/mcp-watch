@@ -1,45 +1,45 @@
 // ToxicFlowScanner.ts
-import * as fs from "fs";
-import * as path from "path";
-import { AbstractScanner } from "../BaseScanner";
-import { Vulnerability } from "../../types/Vulnerability";
-import { MCPScanner } from "../McpScanner";
+import * as fs from 'fs';
+import * as path from 'path';
+import { AbstractScanner } from '../BaseScanner';
+import { Vulnerability } from '../../types/Vulnerability';
+import { MCPScanner } from '../McpScanner';
 
 export class ToxicFlowScanner extends AbstractScanner {
   async scan(projectPath: string): Promise<Vulnerability[]> {
-    console.log("🌊 Scanning for toxic agent flows...");
+    console.log('🌊 Scanning for toxic agent flows...');
 
     const vulnerabilities: Vulnerability[] = [];
-    const files = MCPScanner.getAllFiles(projectPath, [".ts", ".js", ".py"]);
+    const files = MCPScanner.getAllFiles(projectPath, ['.ts', '.js', '.py']);
 
     for (const file of files) {
-      const content = fs.readFileSync(file, "utf8");
-      const lines = content.split("\n");
+      const content = fs.readFileSync(file, 'utf8');
+      const lines = content.split('\n');
 
       lines.forEach((line, index) => {
         if (this.containsUntrustedDataProcessing(line)) {
           vulnerabilities.push({
-            id: "UNTRUSTED_DATA_PROCESSING",
-            severity: "medium",
-            category: "toxic-flow",
-            message: "External data processed without sanitization",
+            id: 'UNTRUSTED_DATA_PROCESSING',
+            severity: 'medium',
+            category: 'toxic-flow',
+            message: 'External data processed without sanitization',
             file: path.relative(projectPath, file),
             line: index + 1,
             evidence: line.trim(),
-            source: "Invariant Labs research",
+            source: 'Invariant Labs research',
           });
         }
 
         if (this.containsAutomaticPublishing(line)) {
           vulnerabilities.push({
-            id: "AUTOMATIC_CONTENT_PUBLISHING",
-            severity: "high",
-            category: "toxic-flow",
-            message: "Automatic content publishing - data exfiltration risk",
+            id: 'AUTOMATIC_CONTENT_PUBLISHING',
+            severity: 'high',
+            category: 'toxic-flow',
+            message: 'Automatic content publishing - data exfiltration risk',
             file: path.relative(projectPath, file),
             line: index + 1,
             evidence: line.trim(),
-            source: "Invariant Labs research",
+            source: 'Invariant Labs research',
           });
         }
       });
@@ -48,11 +48,11 @@ export class ToxicFlowScanner extends AbstractScanner {
         content,
         file,
         projectPath,
-        vulnerabilities
+        vulnerabilities,
       );
     }
 
-    return vulnerabilities;
+    return Promise.resolve(vulnerabilities);
   }
 
   private containsUntrustedDataProcessing(line: string): boolean {
@@ -66,7 +66,7 @@ export class ToxicFlowScanner extends AbstractScanner {
     ];
 
     const hasUntrustedSource = untrustedDataSources.some((pattern) =>
-      pattern.test(line)
+      pattern.test(line),
     );
     if (!hasUntrustedSource) return false;
 
@@ -89,7 +89,7 @@ export class ToxicFlowScanner extends AbstractScanner {
     ];
 
     const hasPublishing = publishingPatterns.some((pattern) =>
-      pattern.test(line)
+      pattern.test(line),
     );
     if (!hasPublishing) return false;
 
@@ -106,9 +106,9 @@ export class ToxicFlowScanner extends AbstractScanner {
     content: string,
     file: string,
     projectPath: string,
-    vulnerabilities: Vulnerability[]
+    vulnerabilities: Vulnerability[],
   ) {
-    const lines = content.split("\n");
+    const lines = content.split('\n');
 
     let hasExternalInput = false;
     let hasPrivilegedAccess = false;
@@ -130,15 +130,15 @@ export class ToxicFlowScanner extends AbstractScanner {
 
     if (hasExternalInput && hasPrivilegedAccess && hasPublicOutput) {
       vulnerabilities.push({
-        id: "GENERIC_TOXIC_FLOW_CHAIN",
-        severity: "critical",
-        category: "toxic-flow",
+        id: 'GENERIC_TOXIC_FLOW_CHAIN',
+        severity: 'critical',
+        category: 'toxic-flow',
         message:
-          "Complete toxic flow: external input → privileged access → public output",
+          'Complete toxic flow: external input → privileged access → public output',
         file: path.relative(projectPath, file),
         evidence:
-          "File contains external input processing, privileged data access, and public output mechanisms",
-        source: "Invariant Labs research",
+          'File contains external input processing, privileged data access, and public output mechanisms',
+        source: 'Invariant Labs research',
       });
     }
   }

@@ -1,60 +1,60 @@
 // PromptInjectionScanner.ts
-import * as fs from "fs";
-import * as path from "path";
-import { AbstractScanner } from "../BaseScanner";
-import { Vulnerability } from "../../types/Vulnerability";
-import { MCPScanner } from "../McpScanner";
+import * as fs from 'fs';
+import * as path from 'path';
+import { AbstractScanner } from '../BaseScanner';
+import { Vulnerability } from '../../types/Vulnerability';
+import { MCPScanner } from '../McpScanner';
 
 export class PromptInjectionScanner extends AbstractScanner {
   async scan(projectPath: string): Promise<Vulnerability[]> {
-    console.log("💉 Scanning for prompt injection vulnerabilities...");
+    console.log('💉 Scanning for prompt injection vulnerabilities...');
 
     const vulnerabilities: Vulnerability[] = [];
     const files = MCPScanner.getAllFiles(projectPath, [
-      ".ts",
-      ".js",
-      ".md",
-      ".py",
+      '.ts',
+      '.js',
+      '.md',
+      '.py',
     ]);
 
     for (const file of files) {
-      const content = fs.readFileSync(file, "utf8");
-      const lines = content.split("\n");
+      const content = fs.readFileSync(file, 'utf8');
+      const lines = content.split('\n');
 
       lines.forEach((line, index) => {
         if (
-          line.includes("description") &&
+          line.includes('description') &&
           this.containsSuspiciousPrompts(line)
         ) {
           vulnerabilities.push({
-            id: "TOOL_DESCRIPTION_INJECTION",
-            severity: "high",
-            category: "prompt-injection",
-            message: "Suspicious prompt injection in tool description",
+            id: 'TOOL_DESCRIPTION_INJECTION',
+            severity: 'high',
+            category: 'prompt-injection',
+            message: 'Suspicious prompt injection in tool description',
             file: path.relative(projectPath, file),
             line: index + 1,
             evidence: line.trim(),
-            source: "VulnerableMCP database",
+            source: 'VulnerableMCP database',
           });
         }
 
         if (this.containsRADEPatterns(line)) {
           vulnerabilities.push({
-            id: "RETRIEVAL_AGENT_DECEPTION",
-            severity: "high",
-            category: "prompt-injection",
+            id: 'RETRIEVAL_AGENT_DECEPTION',
+            severity: 'high',
+            category: 'prompt-injection',
             message:
-              "RADE pattern detected - hidden commands in retrieval content",
+              'RADE pattern detected - hidden commands in retrieval content',
             file: path.relative(projectPath, file),
             line: index + 1,
             evidence: line.trim(),
-            source: "PromptHub research",
+            source: 'PromptHub research',
           });
         }
       });
     }
 
-    return vulnerabilities;
+    return Promise.resolve(vulnerabilities);
   }
 
   private containsSuspiciousPrompts(line: string): boolean {

@@ -1,4 +1,4 @@
-import { Vulnerability } from "../types/Vulnerability";
+import { Vulnerability } from '../types/Vulnerability';
 
 /**
  * Base interface for all vulnerability scanners
@@ -51,14 +51,14 @@ export abstract class AbstractScanner implements BaseScanner {
    */
   protected sanitizeEvidence(line: string): string {
     return line
-      .replace(/sk-[a-zA-Z0-9]{20,}/g, "sk-***REDACTED***")
-      .replace(/ghp_[a-zA-Z0-9]{36}/g, "ghp_***REDACTED***")
-      .replace(/xoxb-[a-zA-Z0-9-]{50,}/g, "xoxb-***REDACTED***")
-      .replace(/AKIA[a-zA-Z0-9]{16}/g, "AKIA***REDACTED***")
-      .replace(/["'][a-zA-Z0-9+/]{40,}={0,2}["']/g, '"***BASE64_REDACTED***"')
+      .replace(/sk-[a-zA-Z0-9]{20,}/g, 'sk-***REDACTED***')
+      .replace(/ghp_[a-zA-Z0-9]{36}/g, 'ghp_***REDACTED***')
+      .replace(/xoxb-[a-zA-Z0-9-]{50,}/g, 'xoxb-***REDACTED***')
+      .replace(/AKIA[a-zA-Z0-9]{16}/g, 'AKIA***REDACTED***')
+      .replace(/[''][a-zA-Z0-9+/]{40,}={0,2}['']/g, '\'***BASE64_REDACTED***\'')
       .replace(
         /eyJ[a-zA-Z0-9_-]+\.eyJ[a-zA-Z0-9_-]+\.[a-zA-Z0-9_-]+/g,
-        "***JWT_REDACTED***"
+        '***JWT_REDACTED***',
       )
       .trim()
       .substring(0, 150);
@@ -73,8 +73,8 @@ export abstract class AbstractScanner implements BaseScanner {
    */
   protected sanitizeAnsiEvidence(line: string): string {
     return line
-      .replace(/\u001b\[[0-9;]*[a-zA-Z]/g, "\\u001b[***ANSI***]")
-      .replace(/\x1b\[[0-9;]*[a-zA-Z]/g, "\\x1b[***ANSI***]")
+      .replace(/\u001b\[[0-9;]*[a-zA-Z]/g, '\\u001b[***ANSI***]')
+      .replace(/\x1b\[[0-9;]*[a-zA-Z]/g, '\\x1b[***ANSI***]')
       .trim()
       .substring(0, 150);
   }
