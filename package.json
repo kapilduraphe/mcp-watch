@@ -7,7 +7,7 @@
     "mcp-watch": "./dist/main.js"
   },
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && chmod +x dist/main.js",
     "dev": "ts-node src/main.ts",
     "start": "node dist/main.js",
     "scan": "ts-node src/main.ts scan",
@@ -17,8 +17,7 @@
     "clean": "rm -rf dist",
     "prepublishOnly": "npm run clean && npm run build",
     "prepare": "npm run build",
-    "type-check": "tsc --noEmit",
-    "postinstall": "npm run build"
+    "type-check": "tsc --noEmit"
   },
   "author": "Kapil Duraphe",
   "license": "MIT",
@@ -31,11 +30,12 @@
     "tmp": "^0.2.1"
   },
   "devDependencies": {
+    "@types/jest": "^30.0.0",
     "@types/node": "^24.3.1",
     "@types/tmp": "^0.2.4",
-    "@types/jest": "^30.0.0",
-    "@typescript-eslint/eslint-plugin": "^6.0.0",
-    "@typescript-eslint/parser": "^6.0.0",
+    "@typescript-eslint/eslint-plugin": "^8.0.0",
+    "@typescript-eslint/parser": "^8.0.0",
+    "eslint": "^9.0.0",
     "ts-node": "^10.9.0",
     "typescript": "^5.0.0"
   },
