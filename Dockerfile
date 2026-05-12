@@ -1,5 +1,5 @@
 # Multi-stage build for production
-FROM node:25-alpine AS builder
+FROM node:26-alpine AS builder
 
 # Set working directory
 WORKDIR /app
@@ -19,7 +19,7 @@ RUN npm ci
 RUN npm run build
 
 # Production stage
-FROM node:25-alpine AS production
+FROM node:26-alpine AS production
 
 # Install git (required for repository cloning)
 RUN apk add --no-cache git
