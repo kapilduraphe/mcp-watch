@@ -73,8 +73,8 @@ export abstract class AbstractScanner implements BaseScanner {
    */
   protected sanitizeAnsiEvidence(line: string): string {
     return line
+      // eslint-disable-next-line no-control-regex -- matching ESC is the point
       .replace(/\u001b\[[0-9;]*[a-zA-Z]/g, "\\u001b[***ANSI***]")
-      .replace(/\x1b\[[0-9;]*[a-zA-Z]/g, "\\x1b[***ANSI***]")
       .trim()
       .substring(0, 150);
   }

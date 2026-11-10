@@ -8,7 +8,7 @@ This repository uses GitHub Actions for continuous integration, testing, and aut
 - **Trigger**: Push to main/develop branches, pull requests
 - **Purpose**: Build, test, and verify the application
 - **Jobs**:
-  - **Test**: Type checking, building, and basic functionality testing
+  - **Test**: Type checking, linting, building, and basic functionality testing
   - **Docker**: Build and test Docker image functionality
 
 ### 2. Security Scan (`security-scan.yml`)
@@ -19,17 +19,7 @@ This repository uses GitHub Actions for continuous integration, testing, and aut
   - Check for outdated packages
   - Docker image verification
 
-### 3. Dependency Update (`dependency-update.yml`)
-- **Trigger**: Weekly on Sundays at 1 AM UTC, manual dispatch
-- **Purpose**: Keep dependencies up to date
-- **Features**:
-  - Update npm packages
-  - Run security fixes
-  - Verify build integrity
-
-**Note**: This workflow complements Dependabot, which automatically creates PRs for dependency updates.
-
-### 4. Release (`release.yml`)
+### 3. Release (`release.yml`)
 - **Trigger**: When a release is published
 - **Purpose**: Build and prepare release assets
 - **Features**:
@@ -37,13 +27,12 @@ This repository uses GitHub Actions for continuous integration, testing, and aut
   - Create compressed release archives
   - Verify release integrity
 
-### 5. Docker Test (`docker-test.yml`)
-- **Trigger**: Changes to Docker files
+### 4. Docker Test (`docker-test.yml`)
+- **Trigger**: Push to main/develop branches, pull requests, manual dispatch
 - **Purpose**: Test Docker builds and functionality
 - **Features**:
-  - Test both production and development images
-  - Verify Docker Compose functionality
-  -         Ensure Docker commands work correctly
+  - Build the production image
+  - Ensure Docker commands work correctly
 
 ## Dependabot 🤖
 
@@ -96,7 +85,6 @@ You can manually trigger workflows from the GitHub Actions tab:
 
 - ✅ **CI**: Runs on every push and PR
 - 🔒 **Security Scan**: Daily automated security checks
-- 🔄 **Dependency Update**: Weekly dependency maintenance
 - 🚀 **Release**: Automated release asset creation
 - 🐳 **Docker Test**: Docker-specific testing
 

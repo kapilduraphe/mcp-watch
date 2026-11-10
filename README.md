@@ -397,7 +397,6 @@ This repository uses automated workflows for CI/CD, security scanning, and depen
 
 - **CI**: Automated testing and Docker verification on every push/PR
 - **Security Scan**: Daily security audits and vulnerability checks
-- **Dependency Update**: Weekly dependency maintenance and security fixes
 - **Release**: Automated release asset creation
 - **Docker Test**: Docker-specific testing and validation
 

@@ -15,6 +15,8 @@ module.exports = tseslint.config(
       '@typescript-eslint/no-explicit-any': 'warn',
       '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
       'no-console': 'off',
+      // Scanners implement an async interface but run synchronously
+      '@typescript-eslint/require-await': 'off',
       'prefer-const': 'error',
       'no-var': 'error',
       'object-shorthand': 'error',

@@ -59,7 +59,7 @@ export class MCPScanner {
     const tempDir = tmp.dirSync({ unsafeCleanup: true });
 
     try {
-      await this.cloneRepo(githubUrl, tempDir.name);
+      this.cloneRepo(githubUrl, tempDir.name);
 
       // Initialize all scanners
       const credentialScanner = new CredentialScanner();
@@ -175,7 +175,7 @@ export class MCPScanner {
    * @throws {Error} When git clone fails
    * @private
    */
-  private async cloneRepo(url: string, targetDir: string) {
+  private cloneRepo(url: string, targetDir: string): void {
     try {
       console.log("📥 Cloning repository...");
       const result = spawnSync("git", ["clone", "--depth", "1", url, targetDir], {
@@ -187,7 +187,8 @@ export class MCPScanner {
         throw new Error(`Git clone failed: ${result.stderr || result.error?.message}`);
       }
     } catch (error) {
-      throw new Error(`Failed to clone repository: ${error}`);
+      const message = error instanceof Error ? error.message : String(error);
+      throw new Error(`Failed to clone repository: ${message}`);
     }
   }
 
@@ -228,7 +229,7 @@ export class MCPScanner {
             }
           }
         }
-      } catch (error) {
+      } catch {
         // Skip directories we can't read
       }
     };

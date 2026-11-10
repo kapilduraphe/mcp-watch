@@ -52,10 +52,10 @@ export class AnsiInjectionScanner extends AbstractScanner {
 
   private containsAnsiEscapes(line: string): boolean {
     return (
+      // eslint-disable-next-line no-control-regex -- matching ESC is the point
       /\u001b\[[0-9;]*[a-zA-Z]/.test(line) ||
       /\\u001b\[[0-9;]*[a-zA-Z]/.test(line) ||
-      /\\x1b\[[0-9;]*[a-zA-Z]/.test(line) ||
-      /\x1b\[[0-9;]*[a-zA-Z]/.test(line)
+      /\\x1b\[[0-9;]*[a-zA-Z]/.test(line)
     );
   }
 
