@@ -164,7 +164,7 @@ program
           console.log(
             JSON.stringify(
               {
-                projectPath: projectPath,
+                projectPath,
                 scanDate: new Date().toISOString(),
                 scanner: "MCP Watch",
                 researchSources: [
