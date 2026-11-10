@@ -1,6 +1,6 @@
 {
   "name": "mcp-watch",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Security scanner for Model Context Protocol (MCP) servers - detect vulnerabilities and security issues",
   "main": "dist/main.js",
   "bin": {
@@ -26,10 +26,11 @@
     "url": "git+https://github.com/kapilduraphe/mcp-watch.git"
   },
   "dependencies": {
-    "commander": "^14.0.0",
-    "tmp": "^0.2.1"
+    "commander": "^14.0.3",
+    "tmp": "^0.2.7"
   },
   "devDependencies": {
+    "@eslint/js": "^9.39.5",
     "@types/jest": "^30.0.0",
     "@types/node": "^24.3.1",
     "@types/tmp": "^0.2.4",
@@ -37,14 +38,20 @@
     "@typescript-eslint/parser": "^8.0.0",
     "eslint": "^9.0.0",
     "ts-node": "^10.9.0",
-    "typescript": "^5.0.0"
+    "typescript": "^5.0.0",
+    "typescript-eslint": "^8.72.2"
   },
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=20.0.0"
   },
   "files": [
     "dist",
     "README.md",
     "LICENSE"
-  ]
+  ],
+  "overrides": {
+    "@typescript-eslint/typescript-estree": {
+      "minimatch": "^11.0.5"
+    }
+  }
 }
