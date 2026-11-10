@@ -1,8 +1,15 @@
 #!/usr/bin/env node
 
+import { readFileSync } from "fs";
+import { join } from "path";
 import { Command } from "commander";
 import { MCPScanner } from "./scanner/McpScanner";
 import { formatReport } from "./utils/reportFormatter";
+
+// Read version from package.json (one level up from both src/ and dist/)
+const { version } = JSON.parse(
+  readFileSync(join(__dirname, "..", "package.json"), "utf8")
+) as { version: string };
 
 // CLI setup
 const program = new Command();
@@ -12,7 +19,7 @@ program
   .description(
     "Comprehensive MCP security scanner based on latest vulnerability research"
   )
-  .version("2.0.0");
+  .version(version);
 
 program
   .command("scan")

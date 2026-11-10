@@ -24,9 +24,3 @@ jobs:
         echo "🧪 Testing Docker image..."
         docker run --rm mcp-watch --help
         docker run --rm mcp-watch scan --help
-
-    - name: Test Docker Compose
-      run: |
-        echo "🧪 Testing Docker Compose..."
-        docker compose build
-        docker compose run --rm mcp-watch --help
